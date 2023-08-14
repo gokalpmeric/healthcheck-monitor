@@ -2,23 +2,25 @@ from flask import Flask, jsonify, request, render_template
 import requests
 from threading import Thread
 from time import sleep
-import os
 import json
+import os
+
+DATA_FILE = '/data/monitors.json'
 
 app = Flask(__name__)
 
-# List to hold monitors
-monitors = []
+def save_monitors(monitors):
+    with open(DATA_FILE, 'w') as file:
+        json.dump(monitors, file)
 
-# File path for storing URLs
-DATA_DIR = './data'  # Change this path as needed
-DATA_FILE = os.path.join(DATA_DIR, 'monitors.json')
+def load_monitors():
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, 'r') as file:
+            return json.load(file)
+    return []
 
-# Ensure the directory exists
-if not os.path.exists(DATA_DIR):
-    os.makedirs(DATA_DIR)
+monitors = load_monitors()
 
-# Function to perform health checks
 def check_health():
     while True:
         for monitor in monitors:
@@ -30,21 +32,6 @@ def check_health():
         save_monitors(monitors)
         sleep(60)
 
-def load_monitors():
-    if os.path.exists(DATA_FILE):
-        try:
-            with open(DATA_FILE, 'r') as file:
-                return json.load(file)
-        except json.JSONDecodeError:
-            pass
-    return []
-
-def save_monitors(monitors):
-    with open(DATA_FILE, 'w') as file:
-        json.dump(monitors, file)
-
-# Starting the background thread
-monitors = load_monitors()
 health_check_thread = Thread(target=check_health)
 health_check_thread.start()
 
