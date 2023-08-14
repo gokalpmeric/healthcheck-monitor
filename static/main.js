@@ -6,13 +6,18 @@ function loadMonitors() {
             tableBody.innerHTML = '';
             data.forEach((monitor, index) => {
                 const row = tableBody.insertRow();
-                row.insertCell().innerText = monitor.url; // Display URL
+                row.insertCell().innerText = monitor.url;
                 const statusCell = row.insertCell();
                 const statusCircle = document.createElement('div');
                 statusCircle.className = `status-circle status-${monitor.status}`;
                 statusCell.appendChild(statusCircle);
-                const statusText = document.createTextNode(` ${monitor.status}`); // Add space to separate the circle and text
+                const statusText = document.createTextNode(` ${monitor.status}`);
                 statusCell.appendChild(statusText);
+                const detailsCell = row.insertCell();
+                const detailsLink = document.createElement('a');
+                detailsLink.href = '/details?url=' + encodeURIComponent(monitor.url);
+                detailsLink.innerText = 'View Details';
+                detailsCell.appendChild(detailsLink);
                 const deleteButton = document.createElement('button');
                 deleteButton.innerText = 'Delete';
                 deleteButton.className = 'btn btn-danger';
@@ -62,8 +67,5 @@ function updateCounter() {
     }
 }
 
-// Call updateCounter every second
 setInterval(updateCounter, 1000);
-
-// Initial load of monitors
 loadMonitors();
