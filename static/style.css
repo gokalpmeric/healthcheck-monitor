@@ -1,0 +1,32 @@
+body {
+    background-color: #f5f5f5;
+}
+
+#monitorTable th, #monitorTable td {
+    text-align: center;
+}
+
+form#addMonitorForm {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+form#addMonitorForm input {
+    width: 200px;
+}
+
+.status-circle {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.status-up {
+    background-color: green;
+}
+
+.status-down {
+    background-color: red;
+}

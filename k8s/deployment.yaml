@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-monitor-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-monitor-app
+  template:
+    metadata:
+      labels:
+        app: my-monitor-app
+    spec:
+      containers:
+      - name: my-monitor-app
+        image: gokalpmeric/healthcheckmonitor:0.0.1
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: monitors-data
+          mountPath: /data
+      volumes:
+      - name: monitors-data
+        persistentVolumeClaim:
+          claimName: monitors-pvc
