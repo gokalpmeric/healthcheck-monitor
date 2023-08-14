@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: my-monitor-app
-        image: gokalpmeric/healthcheckmonitor:0.0.4
+        image: gokalpmeric/healthcheckmonitor:0.0.5
         ports:
         - containerPort: 5000
         volumeMounts:

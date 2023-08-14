@@ -6,29 +6,47 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Monitor Details</title>
     <style>
-        .day {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin: 5px;
-            display: inline-block;
-            min-width: 150px;
+        .uptime-bar {
+            height: 10px;
+            background-color: green;
+        }
+        .downtime-bar {
+            height: 10px;
+            background-color: red;
         }
     </style>
 </head>
 <body>
     <div class="container mt-4">
         <h1 class="text-center">Monitor Details</h1>
-        <p><strong>URL:</strong> {{ url }}</p>
-        <div id="dailyData">
-            {% for date, data in daily_data.items() %}
-                <div class="day">
-                    <strong>{{ date }}</strong><br>
-                    Uptime: {{ (data['uptime'] / (data['uptime'] + data['downtime']) * 100)|round(2) }}%<br>
-                    Uptime: {{ (data['uptime'] / 60)|int }} minutes<br>
-                    Downtime: {{ (data['downtime'] / 60)|int }} minutes
-                </div>
-            {% endfor %}
-        </div>
+        <p><strong>URL:</strong> <a href="{{ url }}" target="_blank">{{ url }}</a></p>
+
+        <h3>Daily Uptime</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Uptime</th>
+                    <th>Downtime</th>
+                    <th>Uptime Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for date, data in daily_data.items() %}
+                <tr>
+                    <td>{{ date }}</td>
+                    <td>{{ data['uptime'] }} seconds</td>
+                    <td>{{ data['downtime'] }} seconds</td>
+                    <td>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ (data['uptime'] / (data['uptime'] + data['downtime'])) * 100 }}%" aria-valuenow="{{ (data['uptime'] / (data['uptime'] + data['downtime'])) * 100 }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/" class="btn btn-secondary">Back to Monitors</a>
     </div>
 </body>
 </html>
